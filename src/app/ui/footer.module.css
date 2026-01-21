@@ -1,0 +1,30 @@
+.footer {
+    text-align: center;
+    padding: 2rem 1rem;
+    border-top: 1px solid var(--card-border);
+    margin-top: 4rem;
+    background: rgba(0, 0, 0, 0.3);
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.copyright {
+    color: #71717a;
+    font-size: 0.9375rem;
+    margin: 0;
+}
+
+.link {
+    color: var(--brand-primary);
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s;
+}
+
+.link:hover {
+    color: var(--brand-secondary);
+    text-decoration: underline;
+}

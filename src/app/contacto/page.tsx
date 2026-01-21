@@ -1,4 +1,5 @@
 import { Navbar } from '../ui/navbar';
+import { Footer } from '../ui/footer';
 import styles from './contacto.module.css';
 
 export default function ContactoPage() {
@@ -122,15 +123,7 @@ export default function ContactoPage() {
                 </div>
             </main>
 
-            <footer style={{
-                textAlign: 'center',
-                padding: '2rem',
-                borderTop: '1px solid var(--card-border)',
-                color: '#71717a',
-                marginTop: '4rem'
-            }}>
-                © {new Date().getFullYear()} Alejandrums. Todos los derechos reservados.
-            </footer>
+            <Footer />
         </>
     );
 }

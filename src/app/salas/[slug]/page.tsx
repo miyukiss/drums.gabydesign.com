@@ -1,6 +1,7 @@
 import { notFound } from 'next/navigation';
 import { MOCK_ROOMS } from '@/app/lib/mock-data';
 import { Navbar } from '@/app/ui/navbar';
+import { Footer } from '@/app/ui/footer';
 import { RoomBookingWidget } from '@/app/ui/room-booking-widget';
 
 export function generateStaticParams() {
@@ -121,6 +122,8 @@ export default async function RoomPage({ params }: { params: Promise<{ slug: str
                     }
                 }
             `}</style>
+
+            <Footer />
         </>
     );
 }

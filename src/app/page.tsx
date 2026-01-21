@@ -2,6 +2,7 @@ import { MOCK_ROOMS } from './lib/mock-data';
 import { Navbar } from './ui/navbar';
 import { Hero } from './ui/hero';
 import { RoomCard } from './ui/room-card';
+import { Footer } from './ui/footer';
 
 export default function Home() {
     return (
@@ -25,15 +26,7 @@ export default function Home() {
                 </div>
             </main>
 
-            <footer style={{
-                textAlign: 'center',
-                padding: '2rem',
-                borderTop: '1px solid var(--card-border)',
-                color: '#71717a',
-                marginTop: '4rem'
-            }}>
-                © {new Date().getFullYear()} Alejandrums. Todos los derechos reservados.
-            </footer>
+            <Footer />
         </>
     );
 }
