@@ -1,0 +1,45 @@
+.navbar {
+    /* Use a dark, semi-transparent background for a modern feel */
+    background-color: rgba(10, 10, 10, 0.8);
+    backdrop-filter: blur(10px);
+    /* Glassmorphism effect */
+    border-bottom: 1px solid var(--card-border);
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    padding: 1rem 0;
+}
+
+.container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-size: 1.5rem;
+    font-weight: 700;
+    letter-spacing: -0.05em;
+    color: var(--foreground);
+}
+
+.brandAccent {
+    color: var(--primary);
+}
+
+.links {
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+}
+
+.link {
+    color: #a1a1aa;
+    /* Muted text */
+    font-weight: 500;
+    transition: color 0.2s;
+}
+
+.link:hover {
+    color: var(--foreground);
+}

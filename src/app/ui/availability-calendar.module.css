@@ -1,0 +1,233 @@
+.calendarContainer {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    padding: 1.5rem;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.priceInfo {
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+}
+
+.price {
+    font-size: 1.75rem;
+    font-weight: 700;
+}
+
+.priceUnit {
+    font-size: 1rem;
+    color: #a1a1aa;
+}
+
+.statusBadge {
+    background: rgba(34, 197, 94, 0.1);
+    color: var(--success);
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+/* Date Navigation */
+.dateNav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 8px;
+    padding: 0.5rem;
+}
+
+.navButton {
+    background: transparent;
+    border: none;
+    color: #a1a1aa;
+    cursor: pointer;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    font-size: 1.25rem;
+    transition: all 0.2s;
+}
+
+.navButton:hover:not(:disabled) {
+    background: var(--primary);
+    color: white;
+}
+
+.navButton:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
+.currentDate {
+    font-weight: 600;
+    color: var(--foreground);
+}
+
+/* Time Slots Grid */
+.slotsContainer {
+    max-height: 350px;
+    overflow-y: auto;
+    padding-right: 0.5rem;
+}
+
+.slotsContainer::-webkit-scrollbar {
+    width: 6px;
+}
+
+.slotsContainer::-webkit-scrollbar-track {
+    background: var(--card-border);
+    border-radius: 3px;
+}
+
+.slotsContainer::-webkit-scrollbar-thumb {
+    background: var(--primary);
+    border-radius: 3px;
+}
+
+.slotsGrid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.5rem;
+}
+
+.slot {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.75rem;
+    border-radius: 8px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    border: 2px solid transparent;
+}
+
+.slotAvailable {
+    background: rgba(34, 197, 94, 0.1);
+    color: var(--success);
+    border-color: rgba(34, 197, 94, 0.3);
+}
+
+.slotAvailable:hover {
+    background: rgba(34, 197, 94, 0.2);
+    border-color: var(--success);
+    transform: scale(1.02);
+}
+
+.slotSelected {
+    background: var(--primary);
+    color: white;
+    border-color: var(--primary);
+    box-shadow: 0 4px 12px var(--primary-glow);
+}
+
+.slotReserved {
+    background: rgba(239, 68, 68, 0.1);
+    color: #ef4444;
+    border-color: rgba(239, 68, 68, 0.2);
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+/* Selection Summary */
+.summary {
+    margin-top: 1.5rem;
+    padding: 1rem;
+    background: rgba(109, 40, 217, 0.1);
+    border-radius: 8px;
+    border: 1px solid rgba(109, 40, 217, 0.3);
+}
+
+.summaryTitle {
+    font-size: 0.875rem;
+    color: #a1a1aa;
+    margin-bottom: 0.5rem;
+}
+
+.summaryDetails {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.selectedSlots {
+    font-size: 0.9rem;
+    color: var(--foreground);
+}
+
+.totalPrice {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--primary);
+}
+
+/* Book Button */
+.bookButton {
+    width: 100%;
+    margin-top: 1.5rem;
+    padding: 1rem;
+    font-size: 1.1rem;
+}
+
+.bookButton:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none !important;
+}
+
+.note {
+    margin-top: 1rem;
+    font-size: 0.875rem;
+    color: #666;
+    text-align: center;
+}
+
+/* Legend */
+.legend {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--card-border);
+}
+
+.legendItem {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.75rem;
+    color: #a1a1aa;
+}
+
+.legendDot {
+    width: 12px;
+    height: 12px;
+    border-radius: 4px;
+}
+
+.legendAvailable {
+    background: rgba(34, 197, 94, 0.3);
+    border: 1px solid var(--success);
+}
+
+.legendSelected {
+    background: var(--primary);
+}
+
+.legendReserved {
+    background: rgba(239, 68, 68, 0.3);
+    border: 1px solid #ef4444;
+}
