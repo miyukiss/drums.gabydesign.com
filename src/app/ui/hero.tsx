@@ -14,32 +14,32 @@ export function Hero() {
                     playsInline
                     poster="https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?auto=format&fit=crop&q=80&w=1920"
                 >
-                    {/* Video de estudio de música con instrumentos - Pexels free stock */}
+                    {/* Video cinemático de estudio con enfoque en batería y equipos */}
                     <source
-                        src="https://videos.pexels.com/video-files/3753773/3753773-hd_1920_1080_25fps.mp4"
+                        src="https://videos.pexels.com/video-files/3194277/3194277-hd_1920_1080_25fps.mp4"
                         type="video/mp4"
                     />
-                    {/* Fallback para navegadores que no soportan video */}
-                    Tu navegador no soporta videos HTML5.
+                    Tu navegador no soporta videos.
                 </video>
                 <div className={styles.videoOverlay}></div>
             </div>
 
             {/* Content */}
             <div className={`container ${styles.container}`}>
+                <div className={styles.badge}>Estudio Profesional en Santiago</div>
                 <h1 className={styles.title}>
-                    Tu sonido, <span className="title-gradient">profesional.</span>
+                    Tu sonido, <span className="title-gradient">sin límites.</span>
                 </h1>
                 <p className={styles.subtitle}>
-                    Salas de ensayo equipadas con la mejor tecnología en el corazón de la ciudad.
-                    Reserva tu bloque online y paga de forma segura.
+                    Salas de ensayo de alta gama con equipamiento premium.
+                    Diseñadas acústicamente para que solo te preocupes de tocar.
                 </p>
                 <div className={styles.actions}>
-                    <Link href="#salas" className="btn btn-primary">
-                        Ver Salas
+                    <Link href="#salas" className="btn btn-primary btn-lg">
+                        Explorar Salas
                     </Link>
                     <Link href="/contacto" className={styles.secondaryLink}>
-                        Contáctanos
+                        Agendar Visita
                     </Link>
                 </div>
             </div>
