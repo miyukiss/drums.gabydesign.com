@@ -28,7 +28,7 @@ export function Hero() {
             <div className={`container ${styles.container}`}>
                 <div className={styles.badge}>Estudio Profesional en Santiago</div>
                 <h1 className={styles.title}>
-                    Tu sonido, <span className="title-gradient">sin límites.</span>
+                    Tu sonido, <span className="title-gradient">sin límites</span>
                 </h1>
                 <p className={styles.subtitle}>
                     Salas de ensayo de alta gama con equipamiento premium.
