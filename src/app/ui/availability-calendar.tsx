@@ -1,7 +1,7 @@
 'use client';
 
-import { useState, useMemo } from 'react';
-import { Room, TimeSlot, generateDaySlots, formatHour, formatPrice } from '../lib/types';
+import { useState, useMemo, useEffect } from 'react';
+import { Room, TimeSlot, generateDaySlots, formatHour, formatPrice, formatDateLocal } from '../lib/types';
 import { getRoomReservations } from '../lib/mock-reservations';
 import styles from './availability-calendar.module.css';
 
@@ -11,21 +11,53 @@ interface AvailabilityCalendarProps {
 }
 
 export function AvailabilityCalendar({ room, onBooking }: AvailabilityCalendarProps) {
-    const [selectedDate, setSelectedDate] = useState<Date>(new Date());
+    const [selectedDate, setSelectedDate] = useState<Date | null>(null);
     const [selectedSlots, setSelectedSlots] = useState<TimeSlot[]>([]);
+    const [mounted, setMounted] = useState(false);
+
+    useEffect(() => {
+        const now = new Date();
+        // Use midday to avoid any timezone wrap-around issues
+        const todayAtMidday = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 12, 0, 0);
+        setSelectedDate(todayAtMidday);
+        setMounted(true);
+    }, []);
+
+    // Safety check: if somehow we are on a past date, reset to today
+    useEffect(() => {
+        if (!selectedDate) return;
+
+        const todayAtMidnight = new Date();
+        todayAtMidnight.setHours(0, 0, 0, 0);
+
+        const selectedAtMidnight = new Date(selectedDate);
+        selectedAtMidnight.setHours(0, 0, 0, 0);
+
+        if (selectedAtMidnight < todayAtMidnight) {
+            setSelectedDate(new Date());
+        }
+    }, [selectedDate]);
 
     // Get reservations for this room
     const roomReservations = useMemo(() => getRoomReservations(room.id), [room.id]);
 
-    // Generate slots for the selected date
-    const dateString = selectedDate.toISOString().split('T')[0];
+    const dateString = formatDateLocal(selectedDate || new Date());
     const slots = useMemo(
         () => generateDaySlots(room.id, dateString, roomReservations),
-        [room.id, dateString, roomReservations]
+        [room.id, dateString, roomReservations, mounted]
     );
+
+    if (!mounted || !selectedDate) {
+        return (
+            <div className={styles.calendarContainer} style={{ minHeight: '400px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <p>Cargando calendario...</p>
+            </div>
+        );
+    }
 
     // Navigation functions
     const goToPreviousDay = () => {
+        if (!selectedDate) return;
         const newDate = new Date(selectedDate);
         newDate.setDate(newDate.getDate() - 1);
         setSelectedDate(newDate);
@@ -33,6 +65,7 @@ export function AvailabilityCalendar({ room, onBooking }: AvailabilityCalendarPr
     };
 
     const goToNextDay = () => {
+        if (!selectedDate) return;
         const newDate = new Date(selectedDate);
         newDate.setDate(newDate.getDate() + 1);
         setSelectedDate(newDate);
@@ -40,14 +73,15 @@ export function AvailabilityCalendar({ room, onBooking }: AvailabilityCalendarPr
     };
 
     // Check if we can go to previous day (not before today)
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    const canGoPrevious = selectedDate > today;
+    const todayStr = formatDateLocal(new Date());
+    const selectedDateStr = formatDateLocal(selectedDate || new Date());
+    const canGoPrevious = selectedDateStr > todayStr;
 
     // Check if we can go to next day (limit to 30 days)
-    const maxDate = new Date(today);
+    const maxDate = new Date();
+    maxDate.setHours(0, 0, 0, 0);
     maxDate.setDate(maxDate.getDate() + 30);
-    const canGoNext = selectedDate < maxDate;
+    const canGoNext = selectedDate ? selectedDate < maxDate : false;
 
     // Toggle slot selection
     const toggleSlot = (slot: TimeSlot) => {
@@ -68,13 +102,10 @@ export function AvailabilityCalendar({ room, onBooking }: AvailabilityCalendarPr
 
     // Format date for display
     const formatDateDisplay = (date: Date) => {
-        const options: Intl.DateTimeFormatOptions = {
-            weekday: 'long',
-            day: 'numeric',
-            month: 'long'
-        };
-        const formatted = date.toLocaleDateString('es-CL', options);
-        return formatted.charAt(0).toUpperCase() + formatted.slice(1);
+        const days = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
+        const months = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+
+        return `${days[date.getDay()]} ${date.getDate()} de ${months[date.getMonth()]}`;
     };
 
     // Handle booking click
@@ -85,7 +116,7 @@ export function AvailabilityCalendar({ room, onBooking }: AvailabilityCalendarPr
     };
 
     return (
-        <div className={styles.calendarContainer}>
+        <div key={mounted ? 'mounted' : 'unmounted'} className={styles.calendarContainer}>
             {/* Header with price */}
             <div className={styles.header}>
                 <div className={styles.priceInfo}>
@@ -97,15 +128,20 @@ export function AvailabilityCalendar({ room, onBooking }: AvailabilityCalendarPr
 
             {/* Date Navigation */}
             <div className={styles.dateNav}>
-                <button
-                    className={styles.navButton}
-                    onClick={goToPreviousDay}
-                    disabled={!canGoPrevious}
-                    aria-label="Día anterior"
-                >
-                    ←
-                </button>
+                {canGoPrevious ? (
+                    <button
+                        className={styles.navButton}
+                        onClick={goToPreviousDay}
+                        aria-label="Día anterior"
+                    >
+                        ←
+                    </button>
+                ) : (
+                    <div className={styles.navPlaceholder} />
+                )}
+
                 <span className={styles.currentDate}>{formatDateDisplay(selectedDate)}</span>
+
                 <button
                     className={styles.navButton}
                     onClick={goToNextDay}

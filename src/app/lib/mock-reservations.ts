@@ -4,11 +4,13 @@
 // Format: "roomId-date-hour"
 // This simulates some slots already being reserved
 
+import { formatDateLocal } from './types';
+
 const today = new Date();
 const tomorrow = new Date(today);
 tomorrow.setDate(today.getDate() + 1);
 
-const formatDate = (d: Date) => d.toISOString().split('T')[0];
+const formatDate = (d: Date) => formatDateLocal(d);
 
 export const MOCK_RESERVATIONS: string[] = [
     // Today - Sala A has some reservations

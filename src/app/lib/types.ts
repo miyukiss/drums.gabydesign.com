@@ -50,17 +50,21 @@ export interface Booking {
     createdAt: string;
 }
 
+// Utility function to format date as YYYY-MM-DD in local time
+export function formatDateLocal(date: Date): string {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+}
+
 // Utility function to generate time slots for a room on a specific date
 export function generateDaySlots(roomId: string, date: string, existingReservations: string[] = []): TimeSlot[] {
     const slots: TimeSlot[] = [];
 
     // Generate slots from 9am to 10pm (13 one-hour slots)
     const now = new Date();
-    // Use local date parts for comparison to avoid UTC shifts
-    const currentYear = now.getFullYear();
-    const currentMonth = now.getMonth() + 1; // 1-indexed
-    const currentDay = now.getDate();
-    const todayStr = `${currentYear}-${currentMonth.toString().padStart(2, '0')}-${currentDay.toString().padStart(2, '0')}`;
+    const todayStr = formatDateLocal(now);
     const currentHour = now.getHours();
 
     for (let hour = 9; hour < 22; hour++) {
@@ -68,9 +72,10 @@ export function generateDaySlots(roomId: string, date: string, existingReservati
 
         // A slot is "reserved" (not available) if:
         // 1. It's in the list of existing reservations (Mock + LocalStorage)
-        // 2. It's for today and the hour has already passed (or is the current hour)
-        const isPast = date === todayStr && hour <= currentHour;
-        const isReserved = existingReservations.includes(slotId) || isPast;
+        // 2. It's in the past (either a past day or a past hour today)
+        const isPastDay = date < todayStr;
+        const isPastHour = date === todayStr && hour <= currentHour;
+        const isReserved = existingReservations.includes(slotId) || isPastDay || isPastHour;
 
         slots.push({
             id: slotId,
