@@ -35,11 +35,28 @@ export const MOCK_RESERVATIONS: string[] = [
 
 // Function to get reservations for a specific room
 export function getRoomReservations(roomId: string): string[] {
-    return MOCK_RESERVATIONS.filter(r => r.startsWith(`${roomId}-`));
+    let reservations = [...MOCK_RESERVATIONS];
+
+    if (typeof window !== 'undefined') {
+        const stored = localStorage.getItem('alejandrums_reservations');
+        if (stored) {
+            try {
+                const localReservations = JSON.parse(stored);
+                if (Array.isArray(localReservations)) {
+                    // Merge and remove duplicates
+                    reservations = Array.from(new Set([...reservations, ...localReservations]));
+                }
+            } catch (e) {
+                console.error('Error parsing local reservations', e);
+            }
+        }
+    }
+
+    return reservations.filter(r => r.startsWith(`${roomId}-`));
 }
 
 // Function to check if a slot is reserved
 export function isSlotReserved(roomId: string, date: string, hour: number): boolean {
     const slotId = `${roomId}-${date}-${hour}`;
-    return MOCK_RESERVATIONS.includes(slotId);
+    return getRoomReservations(roomId).includes(slotId);
 }
