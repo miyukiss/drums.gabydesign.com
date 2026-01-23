@@ -38,17 +38,18 @@ export function getRoomReservations(roomId: string): string[] {
     let reservations = [...MOCK_RESERVATIONS];
 
     if (typeof window !== 'undefined') {
-        const stored = localStorage.getItem('alejandrums_reservations');
-        if (stored) {
-            try {
+        try {
+            const stored = localStorage.getItem('alejandrums_reservations');
+            if (stored) {
                 const localReservations = JSON.parse(stored);
                 if (Array.isArray(localReservations)) {
-                    // Merge and remove duplicates
-                    reservations = Array.from(new Set([...reservations, ...localReservations]));
+                    // Filter to ensure we only have strings in the expected format
+                    const validLocal = localReservations.filter(id => typeof id === 'string');
+                    reservations = Array.from(new Set([...reservations, ...validLocal]));
                 }
-            } catch (e) {
-                console.error('Error parsing local reservations', e);
             }
+        } catch (e) {
+            console.error('Error reading local reservations:', e);
         }
     }
 
