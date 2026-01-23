@@ -55,15 +55,26 @@ export function generateDaySlots(roomId: string, date: string, existingReservati
     const slots: TimeSlot[] = [];
 
     // Generate slots from 9am to 10pm (13 one-hour slots)
+    const now = new Date();
+    const todayStr = now.toISOString().split('T')[0];
+    const currentHour = now.getHours();
+
     for (let hour = 9; hour < 22; hour++) {
         const slotId = `${roomId}-${date}-${hour}`;
+
+        // A slot is "reserved" (not available) if:
+        // 1. It's in the list of existing reservations
+        // 2. It's for today and the hour has already passed (or is the current hour)
+        const isPast = date === todayStr && hour <= currentHour;
+        const isReserved = existingReservations.includes(slotId) || isPast;
+
         slots.push({
             id: slotId,
             roomId,
             date,
             startHour: hour,
             endHour: hour + 1,
-            status: existingReservations.includes(slotId) ? 'reserved' : 'available'
+            status: isReserved ? 'reserved' : 'available'
         });
     }
 
